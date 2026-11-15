@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { A11yProvider } from "./a11y/settings";
 import { Layout } from "./components/Layout";
 import { About } from "./pages/About";
@@ -12,7 +12,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <A11yProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
@@ -22,7 +22,7 @@ export default function App() {
               <Route path="/about" element={<About />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </A11yProvider>
     </ThemeProvider>
   );
