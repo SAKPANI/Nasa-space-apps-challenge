@@ -1,0 +1,214 @@
+{
+  "_meta": {
+    "purpose": "Pour chaque visualisation NASA du manifeste : ce que la sonde lit sous le pointeur (valeur, classe), et le paysage sonore qui en découle. Sert à l'exploration au survol : on entend sans cliquer.",
+    "extracted_on": "2026-11-15",
+    "honesty": [
+      "Les significations (ex. 'bleu = sel marin', 'précipitations tombent le long du front froid') viennent des textes des pages NASA SVS lues pendant l'extraction. Rien n'est inventé.",
+      "Les valeurs numériques exactes des couleurs NE SONT PAS dans ce fichier : elles se lisent dans les images de légende (colorbars) NASA. L'extraction pixel->valeur est faite par scripts/calibrate_colorbar.py (voir SPEC_EXPLORATION_SONORE.md), avec validation humaine. Statut de chaque légende : 'A_CALIBRER'.",
+      "Le CHOIX du timbre (mer = bruit filtré, pluie = impulsions, etc.) est une décision de sound design, étiquetée 'métaphore sonore'. Ce qui est issu des données : OÙ le son apparaît, QUAND, et AVEC QUELLE INTENSITÉ.",
+      "Un son ne joue JAMAIS là où la donnée NASA ne montre pas le phénomène (ex. pas de pluie dans les aérosols ou les lumières nocturnes). Pas de donnée = silence ou ambiance minimale étiquetée.",
+      "Les boîtes géographiques de lieux (Kuroshio, Agulhas, etc.) sont à valider visuellement contre l'image avant usage : elles ne sont pas fournies par la NASA sous forme de coordonnées."
+    ],
+    "manifest": "nasa_data_manifest.json (mêmes slugs)"
+  },
+  "datasets": [
+    {
+      "slug": "sea-surface-currents-sst",
+      "svs_id": 3912,
+      "phenomenon": "Température de surface de la mer et courants (modèle ECCO2)",
+      "probe": {
+        "value": {"name": "température de surface", "unit": "°C", "nasa_legend_text": "bleu = 0 °C ; vert = 10-20 °C ; jaune ≈ 25 °C ; rouge = 32 °C", "colorbar_file": "sst_ecco2_cbar.png", "lut_status": "A_CALIBRER"},
+        "still_for_probe": "flat_global_ecco2_2028x1024.25000.jpg",
+        "video_for_probe": "ecco2_sst_flow.webmhd.webm",
+        "classes": [
+          {"id": "ocean_data", "how_detected": "la couleur du pixel correspond à la légende (ΔE sous le seuil)", "meaning": "eau de mer avec température connue"},
+          {"id": "no_data_or_land", "how_detected": "couleur hors légende (gris/noir attendu pour les continents) - À VÉRIFIER sur l'image", "meaning": "pas de donnée océanique"},
+          {"id": "flow_motion", "how_detected": "énergie de différence entre images successives (la vidéo montre les courants)", "meaning": "intensité du mouvement des courants"}
+        ]
+      },
+      "soundscape": [
+        {"when": "ocean_data", "layer": "mer", "metaphor": "houle : bruit brun filtré passe-bas avec gonflement lent (LFO 0,08-0,25 Hz)", "controls": "température -> fréquence de coupure et hauteur d'une nappe tonale (froid = grave, sombre, lent ; chaud = plus clair, plus brillant)"},
+        {"when": "flow_motion élevé", "layer": "courant", "metaphor": "ressac/lavage granulaire", "controls": "énergie de mouvement -> intensité ; direction du mouvement -> panoramique"},
+        {"when": "no_data_or_land", "layer": "silence", "controls": "fondu vers le silence : on entend la forme des continents par l'absence de mer"}
+      ],
+      "click_detail": "valeur °C, classe, date de la frame (flat_ecco2_dates.txt), lien source, description textuelle"
+    },
+    {
+      "slug": "perpetual-ocean-2",
+      "svs_id": 5425,
+      "phenomenon": "Courants de bord ouest (Kuroshio, courant des Aiguilles, Gulf Stream), versions beauté/température/salinité",
+      "probe": {
+        "versions": {
+          "temperature": {"nasa_legend_text": "bleu foncé -> violet -> orange -> jaune, 0 à 25 °C", "colorbar_file": "perpetual_ocean2_CLOSE_101_cbar_temperature.png"},
+          "salinity": {"nasa_legend_text": "vert-cyan -> gris -> orange -> rouge, 33 à 36", "colorbar_file": "perpetual_ocean2_CLOSE_100_salinity_cbar.png"},
+          "beauty": {"nasa_legend_text": "flux < 600 m blancs ; flux >= 600 m bleu-cyan-blanc, -3 à 22 °C", "colorbar_file": "perpetual_ocean2_CLOSE_101_cbar_beauty.png"}
+        },
+        "lut_status": "A_CALIBRER",
+        "classes": [
+          {"id": "surface_flow", "how_detected": "version beauté : traînées blanches (profondeur < 600 m selon la page)", "meaning": "courant de surface"},
+          {"id": "deep_flow", "how_detected": "version beauté : traînées bleu-cyan (profondeur >= 600 m selon la page)", "meaning": "courant profond / contre-courant"},
+          {"id": "background_ocean", "how_detected": "fond sombre", "meaning": "peu ou pas de flux tracé"}
+        ]
+      },
+      "soundscape": [
+        {"when": "surface_flow", "layer": "courant de surface", "metaphor": "écoulement continu aigu-médium (bruit passe-bande mobile)", "controls": "densité des traînées -> intensité ; direction -> panoramique"},
+        {"when": "deep_flow", "layer": "courant profond", "metaphor": "ressac grave sourd (sous-basse + bruit passe-bas)", "controls": "intensité du bleu -> volume ; porte l'idée du contre-courant profond du Gulf Stream (texte NASA)"},
+        {"when": "version température", "layer": "nappe tonale", "controls": "0-25 °C -> hauteur"},
+        {"when": "version salinité", "layer": "brillance", "controls": "33-36 -> brillance du timbre"},
+        {"when": "background_ocean", "layer": "silence/très léger souffle"}
+      ],
+      "click_detail": "version active, valeur, profondeur (surface/profond), nom du courant si le pointeur est dans une boîte validée, texte NASA traduit (mention 'traduction')"
+    },
+    {
+      "slug": "nightlights-2012-2023",
+      "svs_id": 5313,
+      "phenomenon": "Évolution des lumières nocturnes 2012-2023 (Black Marble, Suomi NPP VIIRS)",
+      "probe": {
+        "value": {"name": "luminosité relative", "unit": "relative (pas d'unité fournie)", "colorbar_file": null, "note": "Aucune barre de couleur listée sur la page : utiliser la légende qualitative NASA. Ne PAS inventer d'unités."},
+        "classes": [
+          {"id": "bright_light", "how_detected": "luminance élevée sur fond sombre (série annuelle)", "meaning": "zone éclairée"},
+          {"id": "dark", "how_detected": "luminance très basse", "meaning": "nuit sans lumière détectée (océan, zones désertes)"},
+          {"id": "change_more_light", "how_detected": "violet sur la carte de changement (texte NASA)", "meaning": "plus de lumière entre 2012 et 2023"},
+          {"id": "change_less_light", "how_detected": "orange sur la carte de changement (texte NASA)", "meaning": "moins de lumière entre 2012 et 2023"}
+        ]
+      },
+      "soundscape": [
+        {"when": "bright_light", "layer": "ville", "metaphor": "bourdonnement doux + tintements aigus (clochettes)", "controls": "luminosité -> densité de tintements et volume"},
+        {"when": "change_more_light", "layer": "croissance", "controls": "arpèges ascendants plus brillants"},
+        {"when": "change_less_light", "layer": "déclin", "controls": "arpèges descendants, filtrés, plus sourds"},
+        {"when": "dark", "layer": "nuit", "controls": "quasi-silence, très faible souffle grave"}
+      ],
+      "click_detail": "année affichée (si la frame est connue), classe, légende violet/orange, crédit"
+    },
+    {
+      "slug": "geos-aerosols-2025",
+      "svs_id": 5669,
+      "phenomenon": "Types d'aérosols (GEOS), 19 août 2025 20:00 UTC",
+      "probe": {
+        "value": {"name": "type d'aérosol + abondance relative", "colorbar_file": "Aerosols_cbar.png", "lut_status": "A_CALIBRER"},
+        "classes": [
+          {"id": "sea_salt", "how_detected": "bleu (texte NASA)", "meaning": "sel marin (ex. spirales de l'ouragan Erin)"},
+          {"id": "dust", "how_detected": "rose/magenta (texte NASA)", "meaning": "poussière (ex. poussières du Sahara au-dessus de l'Atlantique)"},
+          {"id": "smoke", "how_detected": "orange/rouge (texte NASA)", "meaning": "fumée de feux (agriculture en Afrique australe, feux en Espagne)"},
+          {"id": "sulfate", "how_detected": "vert (texte NASA)", "meaning": "sulfates (pollution, volcans comme Kilauea et Etna)"}
+        ]
+      },
+      "soundscape": [
+        {"when": "sea_salt", "layer": "embruns", "metaphor": "souffle aigu aéré (bruit passe-haut)", "controls": "saturation/abondance -> volume"},
+        {"when": "dust", "layer": "vent de poussière", "metaphor": "vent sec médium-grave (bruit passe-bande)", "controls": "abondance -> volume et largeur de bande"},
+        {"when": "smoke", "layer": "feu", "metaphor": "crépitements épars + grondement grave", "controls": "abondance -> densité de crépitements"},
+        {"when": "sulfate", "layer": "verre", "metaphor": "scintillement cristallin fin (FM douce)", "controls": "abondance -> volume"}
+      ],
+      "click_detail": "type d'aérosol, phénomène associé selon le texte NASA, crédit, image fixe (instant figé, pas une vidéo)",
+      "limits": ["Image fixe d'un seul instant : la sonde lit cet instant ; ne jamais présenter comme du direct."]
+    },
+    {
+      "slug": "air-quality-model-runs",
+      "svs_id": 5533,
+      "phenomenon": "CO, PM2.5, O3, NOx (GEOS-CF), juillet-août 2024",
+      "probe": {
+        "value": {"name": "concentration relative par polluant", "colorbar_file": null, "lut_status": "A_CALIBRER", "note": "La page ne donne pas l'association couleur->polluant. La lire sur AirQuality_WithLabels_1920x1080_0000.png et les pages liées 5151 (PM2.5), 5152 (O3), 5153 (CO), 5154 (NOx). Ne pas deviner."},
+        "classes": [
+          {"id": "pollutant_CO"}, {"id": "pollutant_PM25"}, {"id": "pollutant_O3"}, {"id": "pollutant_NOx"}
+        ]
+      },
+      "soundscape": [
+        {"when": "pollutant_CO", "layer": "CO", "metaphor": "bourdonnement grave plein", "controls": "concentration -> volume"},
+        {"when": "pollutant_PM25", "layer": "PM2.5", "metaphor": "texture granuleuse de poussière fine", "controls": "concentration -> densité de grains"},
+        {"when": "pollutant_O3", "layer": "O3", "metaphor": "souffle fin aigu", "controls": "concentration -> brillance"},
+        {"when": "pollutant_NOx", "layer": "NOx", "metaphor": "grondement médium rugueux", "controls": "concentration -> rugosité"}
+      ],
+      "click_detail": "polluant, concentration relative, période, crédit",
+      "limits": ["Le choix des timbres par polluant est artistique ; seule la présence/intensité vient de la donnée. Le dire dans l'interface."]
+    },
+    {
+      "slug": "dyamond-co2",
+      "svs_id": 5196,
+      "phenomenon": "CO2 global, janvier-mars 2020 (DYAMOND)",
+      "probe": {
+        "value": {"name": "concentration de CO2 (ppm) relative", "colorbar_file": "dyamondCbar_6-27-2024a.png", "lut_status": "A_CALIBRER", "note": "La barre donne plage, couleur ET opacité : calibrer les trois."},
+        "video_for_probe": "dyamondPointCloud_12-1-2023b_dyamond_co2_anim_globe_orbit_1080p30_h265.mp4",
+        "classes": [
+          {"id": "co2_dense", "how_detected": "points denses/opaques selon la légende"},
+          {"id": "co2_thin", "how_detected": "points rares/transparents"},
+          {"id": "empty", "how_detected": "fond sombre"}
+        ]
+      },
+      "soundscape": [
+        {"when": "co2_dense / co2_thin", "layer": "respiration de la planète", "metaphor": "pouls lent + nappe grave", "controls": "la pulsation réelle visible dans les frames (cycle jour/nuit, photosynthèse/respiration, couche limite, d'après NASA) pilote le rythme ; densité -> épaisseur de la nappe"},
+        {"when": "empty", "layer": "silence"}
+      ],
+      "click_detail": "concentration relative, repère historique de la page (278 ppm en 1750, 427 ppm en mai 2024), crédit"
+    },
+    {
+      "slug": "iss-lightning-2017-2023",
+      "svs_id": 5011,
+      "phenomenon": "Éclairs détectés par LIS sur l'ISS, 2017-2023, fenêtre glissante de 10 jours",
+      "probe": {
+        "value": {"name": "présence/densité d'éclairs", "unit": "événements", "colorbar_file": null},
+        "video_for_probe": "iss_lightning_sphere_07312023.mp4",
+        "classes": [
+          {"id": "flash_cluster", "how_detected": "pixels très lumineux regroupés (détection de blobs)", "meaning": "zone d'orage détectée"},
+          {"id": "no_lightning", "how_detected": "fond sombre", "meaning": "pas de détection (rappel : LIS ne couvre que tropiques et moyennes latitudes)"}
+        ]
+      },
+      "soundscape": [
+        {"when": "flash_cluster", "layer": "orage lointain", "metaphor": "craquements doux + grondement sourd (tonnerre feutré)", "controls": "densité de flashs -> fréquence des craquements ; pas d'attaque brutale"},
+        {"when": "no_lightning", "layer": "silence"}
+      ],
+      "click_detail": "densité locale, fenêtre de 10 jours, crédit ; rappel de la couverture de LIS"
+    },
+    {
+      "slug": "atmospheric-river-3d",
+      "svs_id": 4960,
+      "phenomenon": "Rivière atmosphérique (MERRA-2) : vapeur d'eau, nuages, précipitations, neige",
+      "probe": {
+        "value": {"name": "couche + intensité", "colorbar_file": "atmo_rivers_cbars01.png", "lut_status": "A_CALIBRER", "nasa_legend_text": "Les couches de surface sont rangées dans l'ordre des tables de couleurs : neige en haut, océan en bas. Quand les valeurs sont très basses, la couche devient transparente et laisse voir celles du dessous."},
+        "video_for_probe": "atmos_river_HD.webm",
+        "captions": "atmos_river_narrated_4k.en_US.vtt (transcription de la narration NASA)",
+        "classes": [
+          {"id": "water_vapor_transport", "how_detected": "ombrage bleu (texte NASA : vue 3D du transport de vapeur d'eau)", "meaning": "corridor d'humidité de la rivière atmosphérique"},
+          {"id": "precipitation_ocean", "how_detected": "couche précipitations sur l'océan, le long du front froid au nord de la structure (texte NASA) - couleur à lire dans la légende", "meaning": "pluie en mer"},
+          {"id": "precipitation_mountain", "how_detected": "précipitations sur le versant au vent des montagnes de la côte ouest des États-Unis (texte NASA) - couleur à lire dans la légende", "meaning": "pluie et neige par soulèvement orographique"},
+          {"id": "snow", "how_detected": "couche neige, en haut des tables de couleurs (légende)", "meaning": "neige"},
+          {"id": "clouds", "how_detected": "couche nuages (MERRA-2) - à lire dans la légende", "meaning": "nuages"},
+          {"id": "background", "how_detected": "couche transparente / fond"}
+        ]
+      },
+      "soundscape": [
+        {"when": "water_vapor_transport", "layer": "air humide", "metaphor": "souffle humide qui coule (bruit passe-bande mobile, aéré)", "controls": "intensité du transport -> volume et vitesse du balayage"},
+        {"when": "precipitation_ocean / precipitation_mountain", "layer": "PLUIE", "metaphor": "gouttes (impulsions filtrées en pluie), dense et brillante quand l'intensité est forte", "controls": "valeur de précipitation -> densité des gouttes ; positions des gouttes déterminées par une graine dérivée de la zone (pas d'aléa pur)"},
+        {"when": "snow", "layer": "neige", "metaphor": "silence feutré avec scintillement très doux", "controls": "valeur -> légère brillance"},
+        {"when": "clouds", "layer": "nuages", "metaphor": "nappe aérienne douce"},
+        {"when": "background", "layer": "silence"}
+      ],
+      "click_detail": "couche + intensité, explication NASA traduite (ITCZ, 'pineapple express', front froid, soulèvement orographique), sous-titres .vtt comme équivalent textuel",
+      "limits": ["C'est ICI que la pluie est justifiée par les données (balise NASA 'Precipitation Rate'). Ne jamais jouer de pluie dans une autre salle sauf si sa visualisation montre des précipitations."]
+    },
+    {
+      "slug": "gedi-forest-height",
+      "svs_id": 4950,
+      "phenomenon": "Hauteur de canopée (lidar GEDI, ISS), gros plan Sénégal",
+      "probe": {
+        "value": {"name": "hauteur de végétation", "unit": "m", "nasa_legend_text": "brun/vert foncé = végétation basse ; vert vif/blanc = végétation haute ; barres 0-50 m, 0-75 m, 0-40 m selon la version", "colorbar_file": "GEDI_colorbar_0to50_01_print.jpg", "alternate_colorbars": ["GEDI_colorbar_0to75_01_print.jpg", "GEDI_colorbar_0to40_01_print.jpg"], "lut_status": "A_CALIBRER", "note": "La page indique que la hauteur est exagérée pour la visibilité : ne pas présenter la valeur comme une mesure au mètre près."},
+        "classes": [
+          {"id": "tall_forest", "how_detected": "vert vif / blanc"},
+          {"id": "low_vegetation", "how_detected": "brun / vert foncé"},
+          {"id": "no_data", "how_detected": "hors couverture GEDI (la couverture se construit au fil des passages)"}
+        ]
+      },
+      "soundscape": [
+        {"when": "tall_forest", "layer": "canopée haute", "metaphor": "bruissement dense de feuillage + vent grave dans la canopée", "controls": "hauteur -> densité et profondeur"},
+        {"when": "low_vegetation", "layer": "végétation basse", "metaphor": "herbes sèches, bruissement clairsemé", "controls": "hauteur -> densité"},
+        {"when": "no_data", "layer": "silence/souffle vide"}
+      ],
+      "click_detail": "hauteur indiquée, rappel de l'exagération, période indiquée par SVS (incohérence connue à afficher telle quelle), crédit"
+    },
+    {
+      "slug": "caldwell73-reference",
+      "svs_id": 13786,
+      "phenomenon": "RÉFÉRENCE DE MÉTHODE (astronomie, pas la Terre)",
+      "use": "Page Méthode : montrer le balayage radar -> hauteur (le rayon fixe la hauteur), comme inspiration du mode 'Balayage'. Ne pas mêler avec les salles Terre."
+    }
+  ]
+}

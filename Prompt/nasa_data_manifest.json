@@ -1,0 +1,321 @@
+{
+  "_meta": {
+    "project": "TERRA SONORA - Earth Jukebox (NASA Space Apps Challenge 2026, defi 'The Earth Information Jukebox')",
+    "extracted_on": "2026-11-15",
+    "how": "Informations lues directement sur les pages officielles NASA SVS listees ci-dessous et sur la page NASA Media Usage Guidelines. Aucune valeur n'est inventee. Les noms de fichiers, tailles et resolutions sont ceux affiches par SVS au moment de l'extraction.",
+    "rules_for_cursor": [
+      "Chaque URL doit etre verifiee (HTTP 200 + Content-Type + taille) par scripts/fetch_nasa_assets.py AVANT usage. Si une URL echoue : STOP, rapporter, ne JAMAIS la remplacer par une image generee ou un visuel invente.",
+      "Les assets sont telecharges UNE fois dans data/raw/nasa/<slug>/ (hors git si > 5 MB), puis transcodes/optimises vers public/nasa/<slug>/. Pas de hotlink vers svs.gsfc.nasa.gov en production.",
+      "Chaque asset garde : source_url, svs_id, credit, sha256, date de telechargement, licence/guideline. Un test CI echoue si un fichier de public/nasa/ n'a pas d'entree de provenance.",
+      "Les videos 'produced' des galeries EIC contiennent parfois de la musique sous licence (Universal Production Music) ou des images Pond5/Shutterstock : NE PAS les utiliser. Seules les visualisations listees ici sont autorisees.",
+      "Ne pas utiliser le logo NASA (meatball/worm/seal) dans l'interface sans autorisation. Crediter en texte : 'Source : NASA Scientific Visualization Studio'.",
+      "Les resolutions annoncees comme 'EIC display' (32:9, 7680x2160) sont des formats de hyperwall : les recadrer/panoramiquer, ne pas les deformer."
+    ],
+    "global_links": {
+      "svs_base": "https://svs.gsfc.nasa.gov",
+      "eic_gallery": "https://svs.gsfc.nasa.gov/gallery/earth-information-center/",
+      "nasa_media_guidelines": "https://www.nasa.gov/multimedia/guidelines/index.html",
+      "eic_page": "https://science.nasa.gov/earth-science/earth-information-center",
+      "default_credit": "NASA's Scientific Visualization Studio"
+    },
+    "eic_context": {
+      "svs_id": 40467,
+      "released": "2023-06-07",
+      "updated": "2025-07-30",
+      "nine_key_areas": ["sea level change", "air quality", "biodiversity", "wildfires", "greenhouse gases", "energy", "disasters", "water resources", "agriculture"],
+      "note": "Le contenu de la galerie sert au hyperwall de l'Earth Information Center au siege de la NASA."
+    }
+  },
+  "datasets": [
+    {
+      "slug": "caldwell73-reference",
+      "title": "Data Sonification: Caldwell 73",
+      "svs_id": 13786,
+      "svs_url": "https://svs.gsfc.nasa.gov/13786/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a010000/a013700/a013786/",
+      "released": "2020-12-23",
+      "category": "Universe (NASA categorie 'Universe', mission Hubble) - REFERENCE CONCEPTUELLE UNIQUEMENT, pas une donnee Terre",
+      "credit": "NASA's Goddard Space Flight Center. Sonification credit: SYSTEM Sounds (M. Russo, A. Santaguida)",
+      "science": "Amas globulaire Caldwell 73 / NGC 1851, constellation Columba, ~40 000 annees-lumiere. Un radar balaie l'image ; le rayon des etoiles est mappe a la hauteur (pitch) : plus loin du centre = plus aigu. Image entiere = choeur ; etoiles orange/rouges = marimba ; etoiles bleues = glockenspiel.",
+      "use_in_app": "Page 'Methode' : expliquer le principe du balayage radar -> pitch, comme inspiration. Ne pas melanger avec les phenomenes Terre.",
+      "assets": {
+        "stills": [
+          {"file": "print.jpg", "size": "1920x1080", "weight": "850.7 KB"},
+          {"file": "wide.jpg", "size": "1920x1080", "weight": "850.7 KB"},
+          {"file": "SW.jpg", "size": "320x180", "weight": "47.1 KB"}
+        ],
+        "videos": [
+          {"file": "Caldwell73_2K_Final.webm", "size": "1920x1920", "weight": "5.6 MB"},
+          {"file": "Caldwell73_2K_Final.mp4", "size": "1920x1920", "weight": "73.9 MB"}
+        ],
+        "captions": [{"file": "CALDWELL73.en_US.SRT", "weight": "49 bytes"}]
+      },
+      "caveats": ["Les dimensions listees par SVS pour les films sont 1920x1920 alors que les images sont 1920x1080 : verifier a l'ouverture."]
+    },
+    {
+      "slug": "nightlights-2012-2023",
+      "title": "Change in Night Lights between 2012 and 2023 - EIC Version",
+      "svs_id": 5313,
+      "svs_url": "https://svs.gsfc.nasa.gov/5313/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005300/a005313/",
+      "released": "2024-06-14",
+      "credit": "NASA's Scientific Visualization Studio. Visualizer: Kel Elkins (USRA). Scientists: Zhuosen Wang, Miguel Roman, Ranjay Shrestha, Srija Chakraborty, Virginia Kalb.",
+      "science": "Carte plate mondiale : serie annuelle moyenne 2012-2023, puis fondu vers la carte de changement : plus de lumiere = violet, moins de lumiere = orange. La sequence se repete avec des zooms sur l'Inde, l'Ukraine, l'Europe de l'Ouest et la Mediterranee orientale. Donnees : Black Marble (Suomi NPP VIIRS), NASA/NOAA.",
+      "dataset": {"name": "Black Marble: Next Generation [Suomi NPP: VIIRS]", "svs_dataset_id": 1176, "url": "https://visibleearth.nasa.gov/images/144898/earth-at-night-black-marble-2016-color-maps/144947l"},
+      "assets": {
+        "stills": [
+          {"file": "nightlights_flat_series_and_change_wZooms_13_EIC.02599_print.jpg", "size": "1024x288", "weight": "62.0 KB"},
+          {"file": "nightlights_flat_series_and_change_wZooms_13_EIC.02599_searchweb.png", "size": "320x180", "weight": "49.9 KB"}
+        ],
+        "videos": [
+          {"file": "nightlights_flat_series_and_change_wZooms_13_EIC_2160p30_h265.mp4", "size": "7680x2160", "weight": "32.7 MB", "note": "leger pour sa resolution : bon candidat"},
+          {"file": "nightlights_flat_series_and_change_wZooms_13_EIC_prores.mov", "size": "7680x2160", "weight": "4.0 GB", "note": "NE PAS telecharger"}
+        ],
+        "frame_sets": [{"path": "frames/7680x2160_32x9_30p/nightlights_2012-2023_change_flat_eic/", "items": 131072, "note": "enorme : extraire seulement quelques frames cles"}]
+      },
+      "alternate_versions": [
+        {"svs_id": 5276, "title": "Change in Night Lights between 2012 and 2023", "url": "https://svs.gsfc.nasa.gov/5276/", "note": "memes donnees, 2 zooms (Inde, Ukraine), format standard"},
+        {"svs_id": 5475, "title": "SOS - Change in Night Lights between 2012 and 2023", "url": "https://svs.gsfc.nasa.gov/5475/", "note": "vue equirectangulaire (utile pour un globe) - a explorer avant usage"},
+        {"svs_id": 5477, "title": "SOS - Day/Night cycle with Blue Marble and Black Marble Nightlights", "url": "https://svs.gsfc.nasa.gov/5477/"}
+      ],
+      "legend": {"purple": "plus de lumiere (2012->2023)", "orange": "moins de lumiere (2012->2023)"},
+      "caveats": ["Format 32:9 : concu pour le hyperwall EIC."]
+    },
+    {
+      "slug": "sea-surface-currents-sst",
+      "title": "Global Sea Surface Currents and Temperature",
+      "svs_id": 3912,
+      "svs_url": "https://svs.gsfc.nasa.gov/3912/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a003900/a003912/",
+      "released": "2012-03-16",
+      "credit": "NASA/Goddard Space Flight Center Scientific Visualization Studio. Animators: Greg Shirah, Horace Mitchell, Eric Sokolowsky. Scientists: Hong Zhang (UCLA), Dimitris Menemenlis (NASA/JPL Caltech). Model: ECCO2 (MIT/JPL).",
+      "science": "Courants de surface colores par temperature de surface de la mer. Sortie du modele ECCO2 (MITgcm) ; seuls les flux de surface sont utilises. Periode : 2007-03-25T12:00Z a 2008-03-03T12:00Z. Version 6840x3420 = resolution complete au ratio 2:1 (equirectangulaire).",
+      "assets": {
+        "stills": [
+          {"file": "flat_global_ecco2_2028x1024.25000.jpg", "size": "2048x1024", "weight": "1002.0 KB", "note": "ratio 2:1 = texture de globe possible"},
+          {"file": "ecco2_and_grid.jpg", "size": "6840x3420", "weight": "12.8 MB", "note": "montre les points reels de grille du modele (points blancs)"},
+          {"file": "ecco2_and_grid_crop1.jpg", "size": "320x180", "weight": "77.0 KB", "note": "Pacifique"},
+          {"file": "ecco2_and_grid_crop2.jpg", "size": "320x180", "weight": "77.8 KB", "note": "Atlantique (coin de cube-sphere visible)"}
+        ],
+        "colorbars": [{"file": "sst_ecco2_cbar.png", "size": "310x95", "legend": "bleu = 0 C ; vert = 10-20 C ; jaune = ~25 C ; rouge = 32 C"}],
+        "videos": [
+          {"file": "ecco2_sst_flow.webmhd.webm", "size": "960x540", "weight": "14.9 MB"},
+          {"file": "ecco2_sst_flow.mp4", "size": "2048x1024", "weight": "244.4 MB"},
+          {"file": "pacificcurrents_1080p30.webm", "size": "1920x1080", "weight": "8.6 MB", "note": "Pacifique est"}
+        ],
+        "frame_sets": [
+          {"path": "frames/2048x1024_1x1_30p/orig/", "items": 2002},
+          {"path": "frames/2048x1024_1x1_30p/with_colorbar/", "items": 2002}
+        ],
+        "other": [{"file": "flat_ecco2_dates.txt", "note": "dates de chaque frame"}]
+      },
+      "caveats": []
+    },
+    {
+      "slug": "geos-aerosols-2025",
+      "title": "GEOS Aerosols (2025)",
+      "svs_id": 5669,
+      "svs_url": "https://svs.gsfc.nasa.gov/5669/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005600/a005669/",
+      "released": "2026-08-10",
+      "credit": "NASA's Global Modeling and Assimilation Office (GMAO) and NASA's Scientific Visualization Studio. Visualizers: Joseph V. Ardizzone, Helen-Nicole Kostis. Scientist: Lesley Ott. DOI: 10.5281/zenodo.21893141",
+      "science": "Image fixe du modele GEOS pour le 19 aout 2025, 20:00 UTC. Couleurs par type d'aerosol : sel marin = bleu ; poussiere = rose/magenta ; fumee de feux = orange/rouge ; sulfates (pollution, volcans) = vert. Phenomenes cites : ouragan Erin (spirales de sel marin, poussiere africaine), poussieres du Sahara traversant l'Atlantique, panaches volcaniques (Kilauea, Etna), fumees (agriculture en Afrique australe, feux en Espagne).",
+      "dataset": {"name": "GEOS-FP 2Km Replay", "svs_dataset_id": 1258, "date_used": "2025-08-19"},
+      "assets": {
+        "stills": [
+          {"file": "Aerosols_2025-08-19T20_00_00_1920x1080.png", "size": "1920x1080", "weight": "2.6 MB"},
+          {"file": "Aerosols_2025-08-19T20_00_00_3840x2160.png", "size": "3840x2160", "weight": "8.8 MB"},
+          {"file": "Aerosols_2025-08-19T20_00_00_5760x3240.png", "size": "5760x3240", "weight": "16.9 MB"},
+          {"file": "Aerosols_2025-08-19T20_00_00_1500x1179_72dpi.png", "size": "1500x1179", "weight": "2.2 MB", "note": "version print 14:11"}
+        ],
+        "colorbars": [{"file": "Aerosols_cbar.png", "size": "1500x300", "weight": "37.8 KB"}]
+      },
+      "related_ids": [{"svs_id": 5572, "title": "GEOS Aerosols"}, {"svs_id": 5552, "title": "Science On A Sphere: Aerosols in the Air"}, {"svs_id": 14899, "title": "Inside the Visualization: Aerosols"}],
+      "caveats": ["Un seul instant fige (image fixe) : pour du mouvement, explorer la page liee 5572 (non extraite ici). L'ID 5669 n'est pas une video."]
+    },
+    {
+      "slug": "air-quality-model-runs",
+      "title": "Air Quality Model Runs",
+      "svs_id": 5533,
+      "svs_url": "https://svs.gsfc.nasa.gov/5533/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005500/a005533/",
+      "released": "2025-05-05",
+      "credit": "NASA's Scientific Visualization Studio and NASA's Global Modeling and Assimilation Office. Visualizers: Helen-Nicole Kostis, Joseph V. Ardizzone. Scientist: Lesley Ott. DOI: 10.5281/zenodo.16782803",
+      "science": "Transport de CO, PM2.5, O3 et NOx pendant juillet-aout 2024 (saison de feux active en Amerique du Nord), modele GEOS-CF. Donnees utilisees : du 1er juillet au 14 septembre 2024. Rendus : sphere rotative, carte plate, version longue (1 min 41), version EIC 32:9.",
+      "dataset": {"name": "GEOS-CF", "svs_dataset_id": 1197, "url": "https://portal.nccs.nasa.gov/datashare/gmao/geos-cf/v2/", "spec": "https://gmao.gsfc.nasa.gov/pubs/docs/Knowland1446.pdf", "more_info": "https://gmao.gsfc.nasa.gov/gmao-products/geos-cf/"},
+      "assets": {
+        "stills": [
+          {"file": "AirQuality_Sphere_1920x1080_0000.png", "size": "1920x1080", "weight": "1.1 MB"},
+          {"file": "AirQuality_WithLabels_1920x1080_0000.png", "size": "1920x1080", "weight": "2.2 MB", "note": "avec etiquettes : utile pour lire les couleurs/polluants"},
+          {"file": "AirQuality_Sphere_5760x3240_0000.png", "size": "5760x3240", "weight": "6.8 MB"},
+          {"file": "AirQualityWithLabels_3840x1080_30fps_0000.png", "size": "3840x1080", "weight": "2.7 MB"}
+        ],
+        "videos": [
+          {"file": "AirQuality_SphereWithLabels_5760x3240.mp4", "size": "5760x3240", "weight": "285.8 MB"},
+          {"file": "AirQuality_MapWithLabels_5760x3240.mp4", "size": "5760x3240", "weight": "286.2 MB"},
+          {"file": "AirQuality_Sphere_5760x3240_long.mp4", "size": "5760x3240", "weight": "361.2 MB"},
+          {"file": "EIC_AirQuality_Preview_3840x1080.mp4", "size": "3840x1080", "weight": "178.8 MB", "note": "la plus legere"}
+        ],
+        "frame_sets": [
+          {"path": "frames/5760x3240_16x9_30p/AirQuality_MapWithLabels/", "items": 1800},
+          {"path": "frames/5760x3240_16x9_30p/AirQuality_SphereWithLabels/", "items": 1801}
+        ]
+      },
+      "related_ids": [
+        {"svs_id": 5151, "title": "Particulate Matter (PM) 2.5"},
+        {"svs_id": 5152, "title": "Near surface Ozone (O3)"},
+        {"svs_id": 5153, "title": "Carbon Monoxide (CO)"},
+        {"svs_id": 5154, "title": "Nitrogen Oxides (NOx)"}
+      ],
+      "caveats": ["Aucune legende couleur->polluant n'est donnee dans le texte de la page : l'extraire depuis les versions 'WithLabels' et les pages liees 5151-5154 (non extraites ici). Ne pas deviner.", "Les videos pesent 180-360 MB : extraire des boucles courtes et des frames, ne pas servir tel quel."]
+    },
+    {
+      "slug": "perpetual-ocean-2",
+      "title": "Perpetual Ocean 2: Western Boundary Currents",
+      "svs_id": 5425,
+      "svs_url": "https://svs.gsfc.nasa.gov/5425/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005400/a005425/",
+      "released": "2025-02-27",
+      "credit": "NASA's Scientific Visualization Studio. Visualizers: Greg Shirah, Horace Mitchell. Scientists: Atousa Saberi (NASA/GSFC), Josh Willis (JPL). Model: ECCO-2 (NASA/JPL, MIT, UT Austin).",
+      "science": "Particules virtuelles lachees dans le champ de vitesse 3D de l'ocean (ECCO-2, annees 2021-2023, dates de l'overlay : 15 jan 2021 a 25 dec 2023). Trainees de 3 jours (< 600 m) ou 6 jours (> 600 m). Parcours : globe en rotation, puis Kuroshio (Japon ; 20-25 C, salinite moyenne 34.5), ocean Indien, courant des Aiguilles/Agulhas (anneaux d'Agulhas, duree de vie > 2 ans), Gulf Stream (jusqu'a 2.5 m/s en surface, contre-courant sous 500 m).",
+      "versions": {
+        "beauty": "flux < 600 m tous blancs ; flux >= 600 m en table bleu-cyan-blanc, -3 a 22 C",
+        "temperature": "bleu fonce -> violet -> orange -> jaune, 0 a 25 C",
+        "salinity": "vert-cyan -> gris -> orange -> rouge, 33 a 36 unites de salinite"
+      },
+      "assets": {
+        "stills": [
+          {"file": "perpetual_ocean2_CLOSE_093_4k_clean_noDate.00000_print.jpg", "size": "1024x576", "weight": "215.0 KB", "version": "beauty"},
+          {"file": "perpetual_ocean2_CLOSE_096_temperature.00000_print.jpg", "size": "1024x576", "weight": "189.7 KB", "version": "temperature"},
+          {"file": "perpetual_ocean2_CLOSE_103_salinity.00001_print.jpg", "size": "1024x576", "weight": "180.3 KB", "version": "salinity"},
+          {"file": "perpetual_ocean2_CLOSE_093_clean_noDate_1080p_carousel.jpg", "size": "1920x1080", "weight": "638.0 KB", "version": "beauty"}
+        ],
+        "colorbars": [
+          {"file": "perpetual_ocean2_CLOSE_101_cbar_beauty.png", "size": "1920x1080", "weight": "309.1 KB"},
+          {"file": "perpetual_ocean2_CLOSE_101_cbar_temperature.png", "size": "1920x1080", "weight": "361.0 KB"},
+          {"file": "perpetual_ocean2_CLOSE_100_salinity_cbar.png", "size": "1920x1080", "weight": "311.4 KB"}
+        ],
+        "videos": [
+          {"file": "perpetual_ocean2_CLOSE_093_clean_noDate_1080p30.mp4", "size": "1920x1080", "weight": "1.2 GB", "note": "trop lourd pour le web : extraire des boucles"},
+          {"file": "perpetual_ocean2_CLOSE_096_temperature_1080p30.mp4", "size": "1920x1080", "weight": "903.8 MB"},
+          {"file": "perpetual_ocean2_CLOSE_103_salinity_1080p30.mp4", "size": "1920x1080", "weight": "994.5 MB"},
+          {"file": "perpetual_ocean2_CLOSE_095_beauty_600m_and_below_1080p30.mp4", "size": "1920x1080", "weight": "115.3 MB", "note": "contre-courant profond uniquement"},
+          {"file": "perpetual_ocean2_CLOSE_093_datesOnly_1080p30.mp4", "size": "1920x1080", "weight": "2.5 MB", "note": "overlay des dates"}
+        ]
+      },
+      "alternate_versions": [
+        {"svs_id": 5529, "title": "Perpetual Ocean 2: Polar Views", "url": "https://svs.gsfc.nasa.gov/5529/"},
+        {"svs_id": 5505, "title": "Perpetual Ocean 2: Equirectangular", "url": "https://svs.gsfc.nasa.gov/5505/"},
+        {"svs_id": 5479, "title": "Ocean Currents in equirectangular projection", "url": "https://svs.gsfc.nasa.gov/5479/"},
+        {"svs_id": 14745, "title": "An Ocean in Motion (video produite, musique sous licence : NE PAS reutiliser)", "url": "https://svs.gsfc.nasa.gov/14745/"}
+      ],
+      "caveats": ["Videos de 0.9 a 1.2 GB : telecharger seulement si necessaire, preferer les stills + extraction de frames.", "Le texte de la page contient une double parenthese '))' apres le lien ECCO : ignorer, c'est une coquille d'origine."]
+    },
+    {
+      "slug": "dyamond-co2",
+      "title": "DYAMOND Global Carbon Dioxide",
+      "svs_id": 5196,
+      "svs_url": "https://svs.gsfc.nasa.gov/5196/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005100/a005196/",
+      "released": "2024-07-22",
+      "credit": "NASA's Scientific Visualization Studio. Visualizers: AJ Christensen, Greg Shirah, Helen-Nicole Kostis, Mark SubbaRao. Scientists: Lesley Ott, Brad Weir, William Putman, Tomohiro Oda. Model: DYAMOND (coupled GEOS-MITgcm, NASA/JPL + NASA/GMAO).",
+      "science": "CO2 en ppm, janvier-mars 2020, modele GEOS haute resolution. Pulsation visible = cycle jour/nuit des feux + photosynthese/respiration des plantes + montee/descente de la couche limite planetaire. Contexte donne par la page : 278 ppm en 1750 -> 427 ppm en mai 2024 ; 2023 = annee la plus chaude enregistree (NASA GISS).",
+      "assets": {
+        "stills": [
+          {"file": "dyamondPointCloud_12-1-2023b_dyamond_co2_anim_globe_orbit_3x3Hyperwall.00200_print.jpg", "size": "1024x576", "weight": "46.2 KB"},
+          {"file": "dyamondPointCloud_3-29-2023a_dyamond_co2_anim_globe_zoom_3x3hyperwall.00800_print.jpg", "size": "1024x576", "weight": "152.4 KB"}
+        ],
+        "colorbars": [{"file": "dyamondCbar_6-27-2024a.png", "size": "1920x1080", "weight": "47.6 KB", "note": "plage, couleur et opacite"}],
+        "videos": [
+          {"file": "dyamondPointCloud_12-1-2023b_dyamond_co2_anim_globe_orbit_1080p30_h265.mp4", "size": "1920x1080", "weight": "6.9 MB", "note": "orbite - TRES LEGER : ideal pour la scene de seuil/hub"},
+          {"file": "dyamondPointCloud_3-29-2023a_dyamond_co2_anim_globe_zoom_1080p30.mp4", "size": "1920x1080", "weight": "43.5 MB", "note": "zoom Est des Etats-Unis"},
+          {"file": "dyamondPointCloud_1-22-2025a_dyamond_co2_anim_globe_zoomwest_3x3hyperwall_1080p30_2.mp4", "size": "1920x1080", "weight": "42.6 MB", "note": "zoom Ouest des Etats-Unis"},
+          {"file": "dyamondPointCloud_12-4-2023b_dyamond_co2_anim_globe_tilt_1080p30.mp4", "size": "1920x1080", "weight": "24.5 MB", "note": "vol experimental a travers les donnees ; milieu tres sombre"}
+        ]
+      },
+      "caveats": ["Ces videos sont des nuages de points volumetriques sur fond sombre : tres adaptees a un hero 3D sombre."]
+    },
+    {
+      "slug": "iss-lightning-2017-2023",
+      "title": "Lightning Events Detected from the International Space Station (ISS) 2017-2023",
+      "svs_id": 5011,
+      "svs_url": "https://svs.gsfc.nasa.gov/5011/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a005000/a005011/",
+      "released": "2023-10-19",
+      "credit": "NASA's Scientific Visualization Studio. Visualizers: Michala Garrison, Greg Shirah, Kel Elkins, Alex Kekesi. Data: LIS on ISS, NASA GHRC DAAC (Blakeslee, R. J., 2020).",
+      "science": "Eclairs detectes par le Lightning Imaging Sensor (LIS) de l'ISS, janvier 2017 - juillet 2023, fenetre glissante de 10 jours (motifs saisonniers). Donnees science controlees qualite. Chaque point = latitude, longitude, instant de detection. LIS couvre les regions tropicales et moyennes latitudes.",
+      "dataset": {"name": "Quality Controlled LIS on ISS Science Data V1", "svs_dataset_id": 1150, "url": "https://ghrcdrive.nsstc.nasa.gov/pub/lis/iss/data/science/final/nc/", "note": "chemin 'nc' = fichiers NetCDF. Piste optionnelle 'vraies donnees' pour declencher de vrais evenements (lat/lon/temps). A explorer et valider avant usage."},
+      "assets": {
+        "stills": [{"file": "iss_lightning_preview.jpg", "size": "1024x576", "weight": "260.7 KB"}, {"file": "iss_lightning_SOS_thumb.jpg", "size": "800x800", "weight": "262.7 KB"}],
+        "videos": [
+          {"file": "iss_lightning_sphere_07312023.mp4", "size": "1920x1080", "weight": "127.0 MB"},
+          {"file": "iss_lightning_sphere_07312023_60p4k.mp4", "size": "3840x2160", "weight": "414.2 MB"},
+          {"file": "iss_lightning_sos_yearly_07312023_2048p60.mp4", "size": "4096x2048", "weight": "334.0 MB", "note": "format Science On a Sphere (equirectangulaire 2:1)"}
+        ],
+        "other": [{"file": "labels.txt"}, {"file": "playlist.sos.txt"}]
+      },
+      "caveats": ["Aucune detection hors zone tropicale/moyennes latitudes : l'indiquer dans l'interface pour ne pas induire en erreur."]
+    },
+    {
+      "slug": "atmospheric-river-3d",
+      "title": "A 3D View of an Atmospheric River from an Earth System Model",
+      "svs_id": 4960,
+      "svs_url": "https://svs.gsfc.nasa.gov/4960/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a004900/a004960/",
+      "released": "2022-01-25",
+      "credit": "NASA's Scientific Visualization Studio. Visualizers: Greg Shirah, Horace Mitchell, Cindy Starr, Kel Elkins. Producers: Jefferson Beck, LK Ward. Scientists: Allison Collow, Natalie Thomas (UMBC), Michael Bosilovich (NASA/GSFC). Data: MERRA-2.",
+      "science": "Rivière atmosphérique de type 'Pineapple Express' vers la cote ouest des Etats-Unis, vue 3D (transport de vapeur d'eau en bleu). Nuages et precipitations de MERRA-2 (reanalyse horaire depuis 1980). La page decrit ITCZ, haute pression subtropicale, depression des Aleoutiennes, soulevement orographique, enneigement.",
+      "assets": {
+        "stills": [
+          {"file": "atmos_rivers_narrated_4k.00090_print.jpg", "size": "1024x576", "weight": "88.5 KB"},
+          {"file": "atmos_river.0324_rfm23_2021-11-29_1351.04370_print.jpg", "size": "1024x576", "weight": "239.9 KB"}
+        ],
+        "colorbars": [{"file": "atmo_rivers_cbars01.png", "size": "1683x1859", "weight": "462.3 KB", "note": "couches : neige au-dessus, ocean en dessous ; valeurs faibles = transparent"}],
+        "videos": [
+          {"file": "atmos_rivers_narrated_HD.webm", "size": "1920x1080", "weight": "68.6 MB", "note": "narree"},
+          {"file": "atmos_river_HD.webm", "size": "1920x1080", "weight": "69.5 MB", "note": "sans narration"},
+          {"file": "atmos_river_DATE_ONLY_HD.webm", "size": "1920x1080", "weight": "60.1 MB", "note": "overlay de dates"}
+        ],
+        "captions": [
+          {"file": "atmos_river_narrated_4k.en_US.vtt", "weight": "6.3 KB", "note": "transcription de la narration : precieux pour l'accessibilite"},
+          {"file": "atmos_river_narrated_4k.en_US.srt", "weight": "6.3 KB"}
+        ]
+      },
+      "caveats": ["La narration et la page sont en anglais : traduire en francais pour l'UI en citant la source, et signaler 'traduction'. Ne pas attribuer la traduction a la NASA."]
+    },
+    {
+      "slug": "gedi-forest-height",
+      "title": "GEDI Forest Height",
+      "svs_id": 4950,
+      "svs_url": "https://svs.gsfc.nasa.gov/4950/",
+      "base": "https://svs.gsfc.nasa.gov/vis/a000000/a004900/a004950/",
+      "released": "2021-10-29",
+      "credit": "NASA's Scientific Visualization Studio. Visualizers: Kel Elkins, Horace Mitchell, Greg Shirah. Scientists: Temilola Fatoyinbo (NASA/GSFC), Atticus Stovall (University of Maryland). Instrument: GEDI lidar (ISS).",
+      "science": "Hauteur de la canopee : brun/vert fonce = vegetation basse ; vert vif/blanc = vegetation haute. Hauteur exageree pour la visibilite. GEDI : lidar a 3 lasers, 8 pistes, 242 tirs/seconde, empreinte de 25 m. Gros plans : cote ouest USA, Floride, Goddard (Maryland), Laurentides (Quebec) et SENEGAL (Afrique de l'Ouest). Donnees dessinees progressivement : couverture croissante a chaque passage.",
+      "dataset": {"name": "Relative Height [GEDI] RH100", "svs_dataset_id": 1131, "url": "https://gedi.umd.edu/"},
+      "assets": {
+        "stills": [
+          {"file": "GEDI_global.0900_print.jpg", "size": "1024x576", "weight": "80.1 KB", "note": "sans barre de couleur"},
+          {"file": "GEDI_global_w_colorbar_0900_print.jpg", "size": "1024x576", "weight": "83.4 KB"},
+          {"file": "GEDI_senegal.11345_print.jpg", "size": "1024x576", "weight": "173.7 KB"},
+          {"file": "GEDI_senegal_w_colorbar.11345_print.jpg", "size": "1024x576", "weight": "179.2 KB"}
+        ],
+        "colorbars": [
+          {"file": "GEDI_colorbar_0to50_01_print.jpg", "legend": "0 a 50 m"},
+          {"file": "GEDI_colorbar_0to75_01_print.jpg", "legend": "0 a 75 m"},
+          {"file": "GEDI_colorbar_0to40_01_print.jpg", "legend": "0 a 40 m"}
+        ],
+        "videos": [
+          {"file": "GEDI_global_w_colorbar_1080p60.webm", "size": "1920x1080", "weight": "6.0 MB"},
+          {"file": "GEDI_global_2160p60.webm", "size": "3840x2160", "weight": "20.5 MB", "note": "sans barre de couleur"},
+          {"file": "GEDI_global_w_colorbar_1080p60.mp4", "size": "1920x1080", "weight": "17.7 MB"},
+          {"file": "GEDI_senegal_1080p60.webm", "size": "1920x1080", "weight": "3.7 MB", "note": "Senegal - angle Afrique de l'Ouest"},
+          {"file": "GEDI_senegal_w_colorbar_1080p60.webm", "size": "1920x1080", "weight": "3.8 MB"},
+          {"file": "GEDI_senegal_w_colorbar_1080p60.mp4", "size": "1920x1080", "weight": "26.9 MB"}
+        ],
+        "frame_sets": [{"path": "frames/3840x2160_16x9_60p/GEDI_Senegal/", "items": 1347}]
+      },
+      "caveats": ["INCOHERENCE SUR LA PAGE SVS : la description globale cite avril 2018-avril 2019 pour certaines videos et avril 2019-avril 2020 pour d'autres textes. Afficher 'periode indiquee par SVS' et verifier sur la page avant de publier une date precise."]
+    }
+  ]
+}
