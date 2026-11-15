@@ -108,6 +108,7 @@ Vercel or Netlify also work (publish `dist`, redirect `/*` to `/index.html`), bu
 - NASA Earth Information Center
 - Tone.js — https://tonejs.github.io
 - React, Vite, TypeScript (open source)
+-SI use: AI assistants were used to help write and review parts of the code, text and documentation. The team reviewed and tested all output. No NASA logos or branding were generated or modified.
 
 ## Acknowledgments
 
