@@ -1,308 +1,114 @@
 # TERRA SONORA
 
-**Écoutez la Terre. / Listen to Earth.**
+*Écoutez la Terre. — Listen to the Earth.*
 
-TERRA SONORA is an interactive browser-based jukebox developed for the NASA Space Apps Challenge, in response to the challenge *The Earth Information Jukebox*.
+**Live demo:** https://SAKPANI.github.io/TERRA-SONORA/
+**Source code:** https://github.com/SAKPANI/TERRA-SONORA
+**Challenge:** NASA Space Apps Challenge 2026 — The Earth Information Jukebox
+**Local event:** Lomé, Togo
+**Team:** TERRA SONORA — NAME 1, NAME 2, NAME 3, NAME 4, NAME 5, NAME 6
 
-The platform transforms authentic NASA Earth visualizations into immersive soundscapes. By analyzing visual characteristics such as brightness, color, contrast, density, and spatial distribution, TERRA SONORA translates visual information into musical elements, allowing users to experience Earth's phenomena through sound.
+TERRA SONORA is a browser jukebox that turns NASA Earth visualizations into pitched, scaled soundscapes. It analyzes visual features of each image (brightness, color, contrast, density, spatial distribution) and maps them to musical parameters, so that people can hear Earth phenomena instead of only seeing them.
 
-TERRA SONORA est un jukebox interactif accessible depuis un navigateur, développé dans le cadre du NASA Space Apps Challenge, en réponse au défi *The Earth Information Jukebox*.
+Sound starts only after an explicit user action: a click, a tap, or the space bar.
 
-La plateforme transforme de véritables visualisations de la NASA sur la Terre en paysages sonores immersifs. En analysant les caractéristiques visuelles telles que la luminosité, les couleurs, le contraste, la densité et la répartition spatiale, TERRA SONORA traduit les informations visuelles en éléments musicaux et permet ainsi de découvrir les phénomènes terrestres à travers le son.
+## NASA visualizations and sources
 
-The audio engine starts only following an explicit user interaction: a click, a tap, or the space bar.
+The ten tracks use frames from the NASA Scientific Visualization Studio (SVS) / Earth Information Center. The images are analyzed locally in the browser.
 
-Le moteur audio ne démarre qu'après une interaction explicite de l'utilisateur : un clic, un toucher ou la barre d'espace.
+| Track | NASA SVS ID |
+|---|---|
+| Caldwell 73 | 13786 |
+| Night lights | 5313 |
+| Ocean currents | 3912 |
+| Aerosols | 5669 |
+| Air quality | 5533 |
+| Perpetual Ocean 2 | 5425 |
+| DYAMOND CO₂ | 5196 |
+| ISS lightning | 5011 |
+| Atmospheric river | 4960 |
+| GEDI forests | 4950 |
 
----
+Source pages: `https://svs.gsfc.nasa.gov/<ID>`
 
-## NASA Visualizations & Sources
+NASA does not endorse this project. NASA materials remain subject to their own terms of use.
 
-TERRA SONORA uses authentic visual materials from NASA's Scientific Visualization Studio (SVS) and Earth Information Center.
+## How data becomes sound
 
-The project integrates NASA visualizations as the visual foundation of its sonification system. These images are analyzed locally by the application to extract visual characteristics that control musical parameters.
-
-The ten visual tracks include:
-
-| Track | NASA SVS ID | Visualization |
+| Track | Image signal | Sound |
 |---|---|---|
-| Caldwell 73 | [13786](https://svs.gsfc.nasa.gov/13786/) | Caldwell 73 |
-| Night Lights | [5313](https://svs.gsfc.nasa.gov/5313/) | Earth's night lights |
-| Ocean Currents | [3912](https://svs.gsfc.nasa.gov/3912/) | Ocean currents |
-| Aerosols | [5669](https://svs.gsfc.nasa.gov/5669/) | Atmospheric aerosols |
-| Air Quality | [5533](https://svs.gsfc.nasa.gov/5533/) | Air quality |
-| Perpetual Ocean 2 | [5425](https://svs.gsfc.nasa.gov/5425/) | Ocean circulation |
-| DYAMOND CO₂ | [5196](https://svs.gsfc.nasa.gov/5196/) | Atmospheric CO₂ |
-| ISS Lightning | [5011](https://svs.gsfc.nasa.gov/5011/) | Lightning observations |
-| Atmospheric River | [4960](https://svs.gsfc.nasa.gov/4960/) | Atmospheric rivers |
-| GEDI Forests | [4950](https://svs.gsfc.nasa.gov/4950/) | Forest structure |
+| Caldwell 73 | brightness, horizontal position | volume, pentatonic note, stereo pan |
+| Night lights | brightness, contrast | volume, shorter notes at high contrast |
+| Ocean currents | horizontal bands, warm/cool color | evolving pad, filter brightness |
+| Aerosols | dominant hue, colored area | chord root and density |
+| Air quality | color bands, pixel density | chords and rhythm |
+| Perpetual Ocean 2 | left-to-right flow, contrast | scale-locked arpeggio |
+| DYAMOND CO₂ | visual density | pad, close interval on bright columns |
+| ISS lightning | bright points | short percussion, silence on dark columns |
+| Atmospheric river | band density, position | wide texture, stereo pan |
+| GEDI forests | drawn height | lower, richer notes for taller bars |
 
-**Important:** The project uses NASA visual resources as the basis for its sound generation. The sonification analyzes the visual content of the images; it does not independently retrieve or measure the underlying scientific datasets.
+The mapping describes the visual content of each image. It is an artistic sonification, not an independent scientific measurement.
 
-NASA does not endorse this project. All NASA materials remain subject to their respective source terms and usage conditions. NASA attribution is provided for informational purposes only.
+## Audio engine
 
-**Important :** Le projet utilise les ressources visuelles de la NASA comme base de génération sonore. La sonification repose sur l'analyse du contenu visuel des images ; elle ne constitue pas une récupération ou une mesure indépendante des données scientifiques sous-jacentes.
+TERRA SONORA uses Tone.js to generate sound directly in the browser: ambient pads, lead voices, percussion, musical scales that keep every generated note harmonically coherent, stereo positioning, and a 30-second WAV export for offline listening.
 
-La NASA ne sponsorise ni n'approuve officiellement ce projet. Les ressources utilisées restent soumises aux conditions d'utilisation de leurs sources respectives.
+## Accessibility
 
----
+Space plays or pauses, arrow keys move the playhead, M mutes. The interface offers a visible gold focus, live-region announcements of the player state, optional speech, a high-contrast mode, adjustable text size, optional vibration on drum hits, and support for `prefers-reduced-motion`.
 
-## Installation
+## Architecture
 
-### Prerequisites
+- `src/data/tracks.ts` — the ten tracks, SVS links, mapping sentences
+- `src/audio/analyzer.ts` — brightness, contrast, light density and hue from canvas pixels
+- `src/audio/scales.ts` — snaps pitches to pentatonic, minor, dorian, lydian or major
+- `src/audio/engine.ts` — Tone.js pad, lead and percussion, started after a user gesture
+- `src/audio/exportWav.ts` — 30-second WAV export through OfflineAudioContext
+- `src/pages` — home, jukebox, track, about, accessibility
 
-- Node.js
-- npm
-- Git
+## Run locally
 
-### Clone the repository
+Requirements: Node.js, npm, Git.
 
 ```bash
 git clone https://github.com/SAKPANI/TERRA-SONORA.git
 cd TERRA-SONORA
-```
-
-### Install dependencies
-
-```bash
 npm install
-```
-
-### Start the development server
-
-```bash
-npm run dev
-```
-
-Open your browser at:
-
-http://127.0.0.1:5173
-
-### Run tests
-
-```bash
+npm run dev      # http://127.0.0.1:5173
 npm test
+npm run build    # production files in dist/
 ```
 
-### Build for production
+## Deployment
 
-```bash
-npm run build
-```
+The app is deployed on GitHub Pages through GitHub Actions (`.github/workflows/deploy.yml`), which builds the project and publishes the `dist/` folder on every push to `main`.
 
-The production-ready files are generated in the `dist/` directory.
+The Vite base path is set to `/TERRA-SONORA/` in `vite.config.ts`. If the repository is renamed, update this value.
 
----
+Vercel or Netlify also work (publish `dist`, redirect `/*` to `/index.html`), but they require `base: '/'`.
 
-## Architecture
+## Project goals
 
-The application is organized into modular components:
-
-| Component | Responsibility |
-|---|---|
-| `src/data/tracks.ts` | Defines the ten visual tracks, NASA SVS references, and sonification descriptions. |
-| `src/audio/analyzer.ts` | Analyzes image pixels, including brightness, contrast, light density, and hue. |
-| `src/audio/scales.ts` | Maps musical pitches to pentatonic, minor, dorian, lydian, and major scales. |
-| `src/audio/engine.ts` | Manages the Tone.js audio engine, including pads, lead instruments, and percussion. |
-| `src/audio/exportWav.ts` | Generates a 30-second WAV audio export using OfflineAudioContext. |
-| `src/pages/` | Contains the home, jukebox, track, about, and accessibility pages. |
-
----
-
-## From Earth Images to Sound
-
-Each NASA visualization is associated with a specific sonification model.
-
-The application analyzes the visual properties of each image and maps them to musical parameters.
-
-| Track | Visual information analyzed | Musical translation |
-|---|---|---|
-| Caldwell 73 | Brightness and horizontal position | Volume, pentatonic notes, stereo panning |
-| Night Lights | Brightness and contrast | Volume and shorter notes when contrast increases |
-| Ocean Currents | Horizontal bands and warm/cool colors | Evolving pads and filter brightness |
-| Aerosols | Dominant hue and colored area | Chord root and sound density |
-| Air Quality | Color bands and pixel density | Chords and rhythm |
-| Perpetual Ocean 2 | Horizontal flow and contrast | Scale-constrained arpeggios |
-| DYAMOND CO₂ | Visual density | Pads and close musical intervals |
-| ISS Lightning | Bright points | Short percussion sounds and silence in dark regions |
-| Atmospheric River | Band density and position | Wide textures and stereo panning |
-| GEDI Forests | Visualized height | Lower and richer notes for taller bars |
-
-The musical mapping is designed to preserve the visual structure of the selected NASA visualization while creating an accessible and engaging listening experience.
-
----
-
-## Audio Engine
-
-TERRA SONORA uses Tone.js to generate sound directly in the browser.
-
-The audio system includes:
-
-- Ambient pads for atmospheric textures.
-- Lead instruments for melodic elements.
-- Percussion for rhythmic events.
-- Musical scales to keep generated notes harmonically coherent.
-- Stereo positioning to create spatial depth.
-- WAV export for offline listening.
-
-The generated sound follows the analyzed visual characteristics of each selected image.
-
----
-
-## Accessibility
-
-Accessibility is an integral part of TERRA SONORA.
-
-The platform includes:
-
-- Space bar to play or pause.
-- Arrow keys to navigate the playhead.
-- M key to mute audio.
-- Visible gold focus indicators.
-- Live announcements of player states.
-- Optional speech assistance.
-- High-contrast mode.
-- Adjustable text size.
-- Optional vibration on percussion events.
-- Reduced-motion support through `prefers-reduced-motion`.
-
-The interface is designed to support different interaction preferences and accessibility needs.
-
----
-
-## Deployment on GitHub Pages
-
-TERRA SONORA can be deployed using GitHub Pages.
-
-The project uses Vite, so GitHub Pages deployment should be configured through GitHub Actions to build and publish the production files.
-
-### Step 1 — Configure the Vite base path
-
-For a repository named `TERRA-SONORA`, configure `vite.config.ts` with the appropriate base path:
-
-```ts
-export default defineConfig({
-  base: '/TERRA-SONORA/',
-  // Keep the existing plugins and other configuration
-})
-```
-
-If the repository uses a different name, replace `TERRA-SONORA` with the exact repository name.
-
-### Step 2 — Create the GitHub Actions workflow
-
-Create the following file:
-
-`.github/workflows/deploy.yml`
-
-```yaml
-name: Deploy TERRA SONORA to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-```
-
-### Step 3 — Enable GitHub Pages
-
-1. Open the repository on GitHub.
-2. Navigate to **Settings**.
-3. Select **Pages**.
-4. Under Build and deployment, choose **GitHub Actions**.
-5. Push the workflow to the `main` branch.
-
-GitHub Actions will automatically build and deploy the application.
-
-Once deployment is complete, the application will be accessible at:
-
-`https://SAKPANI.github.io/TERRA-SONORA/`
-
-Replace the repository name and account name if they differ from the actual GitHub configuration.
-
----
-
-## Project Objectives
-
-TERRA SONORA explores an alternative way of experiencing Earth science information.
-
-Its main objectives are:
-
-- Transform scientific visualizations into accessible auditory experiences.
+- Turn scientific visualizations into accessible listening experiences.
 - Explore the relationship between data visualization and sound.
 - Make Earth science more engaging through sonification.
-- Demonstrate how digital technologies can create new ways to interact with scientific information.
 - Encourage accessibility and alternative forms of scientific communication.
 
----
+## Known limits
 
-## Known Technical Considerations
+- A still image has no time axis; the playhead sweep is the listening time.
+- The WAV export uses the same scale and column statistics with a lighter synthesizer than the live Tone.js voices.
+- Speech and vibration depend on the browser and the device.
+- Audio playback requires a user gesture because of browser autoplay restrictions.
 
-- The sonification is based on visual characteristics extracted from the NASA images.
-- A static image does not contain a time dimension. The playback sweep represents the listening progression.
-- The generated musical patterns are artistic representations of visual information, not direct scientific measurements.
-- WAV export uses the same scale and column statistics as the live audio engine, with a lighter synthesizer.
-- Speech and vibration features depend on browser and device support.
-- Audio playback requires an explicit user interaction in accordance with browser audio restrictions.
+## References
 
----
+- NASA Scientific Visualization Studio — https://svs.gsfc.nasa.gov
+- NASA Earth Information Center
+- Tone.js — https://tonejs.github.io
+- React, Vite, TypeScript (open source)
 
-## Acknowledgements
+## Acknowledgments
 
-We would like to acknowledge NASA's Scientific Visualization Studio and Earth Information Center for providing the scientific visual resources that inspired and support this project.
-
-TERRA SONORA was developed as part of the NASA Space Apps Challenge, responding to the challenge *The Earth Information Jukebox*.
-
-**Listen to the Earth. Discover its patterns. Experience science through sound.**
-
-**TERRA SONORA — Écoutez la Terre.**
+Thanks to the NASA Scientific Visualization Studio and the Earth Information Center for the visualizations, and to the NASA Space Apps Challenge Lomé organizers.
