@@ -1,9 +1,6 @@
 # TERRA SONORA
 
 *Écoutez la Terre. — Listen to the Earth.*
-
-**Live demo:** https://SAKPANI.github.io/TERRA-SONORA/
-**Source code:** https://github.com/SAKPANI/TERRA-SONORA
 **Challenge:** NASA Space Apps Challenge 2026 — The Earth Information Jukebox
 **Local event:** Lomé, Togo
 **Team:** TERRA SONORA — NAME 1, NAME 2, NAME 3, NAME 4, NAME 5, NAME 6
