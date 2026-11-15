@@ -114,7 +114,6 @@ const SplitText = ({
   const onCompleteRef = useRef(onLetterAnimationComplete);
   const liveRef = useRef({ trigger, hoverEffect, accentColor });
   const [fontsLoaded, setFontsLoaded] = useState(fontsAreLoaded);
-  const [ready, setReady] = useState(false);
 
   useIsoLayoutEffect(() => {
     onCompleteRef.current = onLetterAnimationComplete;
@@ -122,15 +121,28 @@ const SplitText = ({
   });
 
   useEffect(() => {
-    if (fontsLoaded) return undefined;
     let active = true;
-    document.fonts.ready.then(() => {
-      if (active) setFontsLoaded(true);
-    });
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => {
+        if (active) {
+          setFontsLoaded(true);
+          
+        }
+      });
+    } else {
+      
+    }
+    const timer = setTimeout(() => {
+      if (active) {
+        setFontsLoaded(true);
+        
+      }
+    }, 400);
     return () => {
       active = false;
+      clearTimeout(timer);
     };
-  }, [fontsLoaded]);
+  }, []);
 
   useGSAP(
     () => {
@@ -149,7 +161,7 @@ const SplitText = ({
       };
 
       if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-        setReady(true);
+        
         finish();
         return;
       }
@@ -387,7 +399,7 @@ const SplitText = ({
           return intro;
         }
       });
-      setReady(true);
+      
       if (revealed) queue();
 
       el.addEventListener('pointerenter', onEnter);
@@ -444,12 +456,11 @@ const SplitText = ({
     <Tag
       key={text}
       ref={ref}
-      className={`split-parent inline-block whitespace-normal ${clip ? 'overflow-hidden' : 'overflow-visible'} ${trigger === 'click' ? 'cursor-pointer' : ''} ${className}`}
+      className={`split-parent inline-block max-w-full break-words whitespace-normal ${clip ? 'overflow-hidden' : 'overflow-visible'} ${trigger === 'click' ? 'cursor-pointer' : ''} ${className}`}
       style={{
         textAlign,
         wordWrap: 'break-word',
-        color,
-        visibility: ready ? undefined : 'hidden'
+        color
       }}
     >
       {text}

@@ -44,9 +44,9 @@ export function PlayerBar() {
           WAV 30 s
         </button>
         <div style={{ flex: "1 1 180px" }}>
-          <div className="caption" style={{ color: "#C5D2E0", fontSize: "0.85rem" }}>{player.track?.title ?? "Aucune piste"}</div>
-          <div aria-hidden="true" style={{ height: 4, background: "#071c33", marginTop: 6 }}>
-            <div style={{ width: `${progress * 100}%`, height: "100%", background: "#1E9BD7" }} />
+          <div className="caption" style={{ color: "var(--color-muted)", fontSize: "0.85rem" }}>{player.track?.title ?? "Aucune piste"}</div>
+          <div aria-hidden="true" style={{ height: 4, background: "var(--color-background)", marginTop: 6, borderRadius: "2px", overflow: "hidden" }}>
+            <div style={{ width: `${progress * 100}%`, height: "100%", background: "var(--color-globe)" }} />
           </div>
         </div>
       </div>

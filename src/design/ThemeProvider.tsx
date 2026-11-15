@@ -13,6 +13,7 @@ type Theme = {
   spacing: Spacing;
   radius: typeof tokens.radius;
   shadow: typeof tokens.shadow;
+  animation: typeof tokens.animation;
 };
 
 const ThemeContext = createContext<Theme | undefined>(undefined);
